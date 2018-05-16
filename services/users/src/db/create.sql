@@ -1,0 +1,2 @@
+CREATE DATABASE micro_apollo_node_users;
+CREATE DATABASE micro_apollo_node_users_test;
