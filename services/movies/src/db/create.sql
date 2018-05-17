@@ -1,0 +1,2 @@
+CREATE DATABASE micro_apollo_node_movies;
+CREATE DATABASE micro_apollo_node_movies_test;

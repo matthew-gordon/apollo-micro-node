@@ -13,6 +13,17 @@ services:
     healthcheck:
       test: exit 0
 
+  movies-db:
+    container_name: movies-db
+    build: ./services/movies/src/db
+    ports:
+      - '5434:5432' # expose ports - HOST:CONTAINER
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: exit 0
+
   users-service:
     container_name: users-service
     build: ./services/users/
@@ -24,7 +35,43 @@ services:
     environment:
       - DATABASE_URL=postgres://postgres:postgres@users-db:5432/micro_apollo_node_users
       - DATABASE_TEST_URL=postgres://postgres:postgres@users-db:5432/micro_apollo_node_users_test
+      - NODE_ENV=${NODE_ENV}
     depends_on:
       - users-db
     links:
       - users-db
+
+  movies-service:
+    container_name: movies-service
+    build: ./services/movies/
+    volumes:
+      - './services/movies:/usr/src/app'
+      - './services/movies/package.json:/usr/src/package.json'
+    ports:
+      - '3001:3000' # expose ports - HOST:CONTAINER
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@movies-db:5432/micro_apollo_node_movies
+      - DATABASE_TEST_URL=postgres://postgres:postgres@movies-db:5432/micro_apollo_node_movies_test
+      - NODE_ENV=${NODE_ENV}
+    depends_on:
+      - movies-db
+      - users-service
+    links:
+      - movies-db
+      - users-service
+
+  gateway-service:
+    container_name: gateway-service
+    build: ./services/gateway/
+    volumes:
+      - './services/gateway:/usr/src/app'
+      - './services/gateway/package.json:/usr/src/package.json'
+    ports:
+      - '3002:3000' # expose ports - HOST:CONTAINER
+    environment:
+      - NODE_ENV=${NODE_ENV}
+    depends_on:
+      - movies-service
+    links:
+      - movies-service
+      - users-service

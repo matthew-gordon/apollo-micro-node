@@ -14,7 +14,7 @@ export default class MainRouter {
   async home(ctx) {
     ctx.status = 200;
     ctx.body = {
-      message: 'User service.',
+      message: 'movie service.',
     };
   }
 
