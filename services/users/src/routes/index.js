@@ -1,24 +1,26 @@
 import Router from 'koa-router';
-import config from '../config';
+import GraphqlRouter from './graphql-router';
+
+const { routes: graphql } = new GraphqlRouter();
 
 export default class MainRouter {
   constructor() {
     this.router = new Router();
+    this.api = new Router();
     this.init();
     this.routes = this.router;
   }
 
   async home(ctx) {
-    const user = await config.db('users').first();
-
     ctx.status = 200;
     ctx.body = {
-      message: 'Hello my love',
-      user,
+      message: 'This is another test from a g!',
     };
   }
 
   init() {
+    this.api.use(graphql);
+    this.router.use('/api', this.api.routes());
     this.router.get('/', this.home);
   }
 }

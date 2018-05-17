@@ -7,7 +7,6 @@
     "dev:start": "nodemon --watch dist --exec 'node dist/server.js'",
     "dev": "npm-run-all --parallel dev:*",
     "build": "rm -rf ./dist && webpack --mode production --colors --progress",
-    "dockerize": "docker-compose up --build -d",
     "start": "nodemon app/dist/server.js"
   },
   "license": "MIT",
@@ -30,11 +29,13 @@
     "bcryptjs": "^2.4.3",
     "graphql": "^0.13.2",
     "graphql-tools": "^3.0.1",
+    "kcors": "^2.2.1",
     "knex": "^0.14.6",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.0",
     "koa-logger": "^3.2.0",
     "koa-router": "^7.4.0",
+    "lodash": "^4.17.10",
     "pg": "^7.4.3",
     "webpack-node-externals": "^1.7.2"
   }
